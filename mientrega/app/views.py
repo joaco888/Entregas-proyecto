@@ -3,6 +3,13 @@ from django.shortcuts import render, redirect
 from .models import Curso, Estudiante, Profesor, Entregable
 from .forms import CursoForm, EstudianteForm, ProfesorForm, EntregableForm
 
+def index(request):
+    cursos = Curso.objects.all()
+    entregables = Entregable.objects.all()
+    estudiantes = Estudiante.objects.all()
+    profesores = Profesor.objects.all()
+    return render(request, 'index.html', {'cursos': cursos, 'entregables': entregables, 'estudiantes': estudiantes, 'profesores': profesores})
+
 def agregar_curso(request):
     if request.method == 'POST':
         form = CursoForm(request.POST)

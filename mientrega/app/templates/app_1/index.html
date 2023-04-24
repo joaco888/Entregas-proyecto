@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Bienvenido a mi sitio</h1>
+  <h2>Cursos:</h2>
+  <ul>
+    {% for curso in cursos %}
+      <li>{{ curso.nombre }}</li>
+    {% empty %}
+      <li>No hay cursos disponibles.</li>
+    {% endfor %}
+  </ul>
+  <h2>Entregables:</h2>
+  <ul>
+    {% for entregable in entregables %}
+      <li>{{ entregable.titulo }} - {{ entregable.curso.nombre }}</li>
+    {% empty %}
+      <li>No hay entregables disponibles.</li>
+    {% endfor %}
+  </ul>
+  <h2>Estudiantes:</h2>
+  <ul>
+    {% for estudiante in estudiantes %}
+      <li>{{ estudiante.nombre }} {{ estudiante.apellido }} - {{ estudiante.email }}</li>
+    {% empty %}
+      <li>No hay estudiantes disponibles.</li>
+    {% endfor %}
+  </ul>
+  <h2>Profesores:</h2>
+  <ul>
+    {% for profesor in profesores %}
+      <li>{{ profesor.nombre }} {{ profesor.apellido }} - {{ profesor.email }}</li>
+    {% empty %}
+      <li>No hay profesores disponibles.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

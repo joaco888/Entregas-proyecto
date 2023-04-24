@@ -55,7 +55,7 @@ ROOT_URLCONF = 'mientrega.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': ['G:\Mi unidad\Curso Programacion Python backend\PROYECTO\entrega-sanabria\mientrega\app\templates\app_1'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

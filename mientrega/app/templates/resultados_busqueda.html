@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Resultados de búsqueda</h1>
+  <p>Se encontraron {{ resultados.count }} resultados:</p>
+
+  <ul>
+    {% for resultado in resultados %}
+      <li><a href="{{ resultado.get_absolute_url }}">{{ resultado }}</a></li>
+    {% empty %}
+      <li>No se encontraron resultados.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

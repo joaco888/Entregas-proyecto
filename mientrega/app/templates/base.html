@@ -13,12 +13,7 @@
                 <li><a href="{% url 'agregar_estudiante' %}">Agregar Estudiante</a></li>
                 <li><a href="{% url 'agregar_profesor' %}">Agregar Profesor</a></li>
                 <li><a href="{% url 'agregar_entregable' %}">Agregar Entregable</a></li>
-                <li>
-                    <form action="{% url 'buscar' %}" method="GET">
-                        <input type="text" name="q" placeholder="Buscar...">
-                        <button type="submit">Buscar</button>
-                    </form>
-                </li>
+                <li><a href="{% url 'buscar' %}">Buscar</a></li>
             </ul>
         </nav>
     </header>

@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Detalles del curso "{{ curso.nombre }}"</h1>
+
+  <p><strong>Descripción:</strong> {{ curso.descripcion }}</p>
+
+  <h2>Estudiantes</h2>
+  <ul>
+    {% for estudiante in curso.estudiante_set.all %}
+      <li><a href="{% url 'detalle_estudiante' estudiante.id %}">{{ estudiante.nombre }} {{ estudiante.apellido }}</a></li>
+    {% empty %}
+      <li>No hay estudiantes inscritos en este curso.</li>
+    {% endfor %}
+  </ul>
+
+  <h2>Profesores</h2>
+  <ul>
+    {% for profesor in curso.profesor_set.all %}
+      <li><a href="{% url 'detalle_profesor' profesor.id %}">{{ profesor.nombre }} {{ profesor.apellido }}</a></li>
+    {% empty %}
+      <li>No hay profesores asignados a este curso.</li>
+    {% endfor %}
+  </ul>
+
+  <h2>Entregables</h2>
+  <ul>
+    {% for entregable in curso.entregable_set.all %}
+      <li><a href="{% url 'detalle_entregable' entregable.id %}">{{ entregable.titulo }}</a></li>
+    {% empty %}
+      <li>No hay entregables asociados a este curso.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

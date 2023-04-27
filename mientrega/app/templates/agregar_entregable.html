@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
 
+{% block title %}Agregar Entregable{% endblock %}
 
 {% block content %}
-  <h1>Agregar entregable</h1>
+  <h2>Agregar entregable</h2>
   <form method="post">
     {% csrf_token %}
     {{ form.as_p }}

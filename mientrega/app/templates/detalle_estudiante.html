@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>{{ estudiante.nombre }}</h1>
+  <p>ID: {{ estudiante.id }}</p>
+  <p>Curso: {{ estudiante.curso }}</p>
+  <h2>Entregables:</h2>
+  <ul>
+    {% for entregable in entregables %}
+      <li><a href="{% url 'detalle_entregable' entregable.id %}">{{ entregable.titulo }}</a></li>
+    {% empty %}
+      <li>No hay entregables para mostrar.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

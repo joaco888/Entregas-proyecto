@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Resultados de búsqueda</h2>
+  <h3>Cursos</h3>
+  {% for curso in cursos %}
+    <p>{{ curso.nombre }}</p>
+  {% empty %}
+    <p>No se encontraron cursos</p>
+  {% endfor %}
+  <h3>Estudiantes</h3>
+  {% for estudiante in estudiantes %}
+    <p>{{ estudiante.nombre }} {{ estudiante.apellido }}</p>
+  {% empty %}
+    <p>No se encontraron estudiantes</p>
+  {% endfor %}
+  <h3>Profesores</h3>
+  {% for profesor in profesores %}
+    <p>{{ profesor.nombre }} {{ profesor.apellido }}</p>
+  {% empty %}
+    <p>No se encontraron profesores</p>
+  {% endfor %}
+  <h3>Entregables</h3>
+  {% for entregable in entregables %}
+    <p>{{ entregable.titulo }}</p>
+  {% empty %}
+    <p>No se encontraron entregables</p>
+  {% endfor %}
+{% endblock %}

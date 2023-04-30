@@ -6,17 +6,17 @@ from .models import Curso, Estudiante, Profesor, Entregable
 class CursoForm(forms.ModelForm):
     class Meta:
         model = Curso
-        fields = ['nombre', 'descripcion']
+        fields = ['nombre','Tipo','Jornada','Costo','descripcion']
 
 class EstudianteForm(forms.ModelForm):
     class Meta:
         model = Estudiante
-        fields = ['nombre', 'apellido', 'edad', 'curso']
+        fields = ['nombre', 'apellido', 'edad','Documento','Telefono', 'curso']
 
 class ProfesorForm(forms.ModelForm):
     class Meta:
         model = Profesor
-        fields = ['nombre', 'apellido', 'email', 'cursos']
+        fields = ['nombre', 'apellido','Documento' ,'email', 'curso']
 
 class EntregableForm(forms.ModelForm):
     class Meta:
@@ -44,4 +44,3 @@ class BusquedaForm(forms.Form):
             self.add_error('busqueda', 'Ingrese un valor a buscar')
         
         return cleaned_data
-

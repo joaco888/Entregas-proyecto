@@ -1,0 +1,9 @@
+body {
+    background-color: aqua;
+}
+input {
+    width: 100%;
+    border-color: cadetblue;
+    border-radius: 50%;
+    background-color: azure;
+}

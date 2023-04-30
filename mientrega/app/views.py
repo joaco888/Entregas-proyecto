@@ -3,6 +3,8 @@ from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib import messages
 from .models import Curso, Estudiante, Profesor, Entregable
 from .forms import CursoForm, EstudianteForm, ProfesorForm, EntregableForm,BusquedaForm
+import os
+from django.conf import settings
 
 def index(request):
     cursos = Curso.objects.all()
@@ -15,53 +17,74 @@ def agregar_curso(request):
     if request.method == 'POST':
         form = CursoForm(request.POST)
         if form.is_valid():
-            form.save()
-            messages.success(request, 'El curso ha sido agregado correctamente.')
+            Curso = form.save(commit=False)
+            Curso.save()
+            form.save_m2m()
+            messages.success(request, 'El Curso ha sido agregado correctamente.')
             return redirect('index')
     else:
         form = CursoForm()
     return render(request, 'agregar_curso.html', {'form': form})
 
+
 def agregar_estudiante(request):
+    cursos = Curso.objects.all()
     if request.method == 'POST':
         form = EstudianteForm(request.POST)
         if form.is_valid():
-            form.save()
+            Estudiante = form.save(commit=False)
+            Estudiante.save()
+            form.save_m2m()
             messages.success(request, 'El Estudiante ha sido agregado correctamente.')
             return redirect('index')
     else:
         form = EstudianteForm()
-    return render(request, 'agregar_estudiante.html', {'form': form})
+    return render(request, 'agregar_estudiante.html', {'form': form, 'cursos':cursos})
+
 
 def agregar_profesor(request):
     if request.method == 'POST':
         form = ProfesorForm(request.POST)
         if form.is_valid():
-            form.save()
-            messages.success(request, 'El Profesor ha sido agregado correctamente.')
+            profesor = form.save(commit=False)
+            profesor.save()
+            form.save_m2m()
             return redirect('index')
     else:
         form = ProfesorForm()
-    return render(request, 'agregar_profesor.html', {'form': form})
+    cursos = Curso.objects.all()
+    return render(request, 'agregar_profesor.html', {'form': form, 'cursos': cursos})
+
+
+
 
 def agregar_entregable(request):
+    cursos = Curso.objects.all()
+    estudiantes = Estudiante.objects.all()
     if request.method == 'POST':
         form = EntregableForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            entregable = form.save(commit=False)
+            archivo_adjunto = form.cleaned_data.get('archivo')
+            # guardamos el archivo en MEDIA_URL y solo guardamos el nombre del archivo en el campo de archivo
+            entregable.archivo.name = os.path.join(settings.MEDIA_URL, archivo_adjunto.name)
+            entregable.save()
+            form.save_m2m()
             messages.success(request, 'El Entregable ha sido agregado correctamente.')
             return redirect('index')
     else:
         form = EntregableForm()
-    return render(request, 'agregar_entregable.html', {'form': form})
+    return render(request, 'agregar_entregable.html', {'form': form, 'cursos': cursos, 'estudiantes': estudiantes})
+
+
 
 
 def buscar(request):
     if request.method == 'POST':
         form = BusquedaForm(request.POST)
         if form.is_valid():
-            termino_busqueda = form.cleaned_data['busqueda']
             opcion_busqueda = form.cleaned_data['opcion']
+            termino_busqueda = form.cleaned_data['busqueda']
             print(termino_busqueda)
             print(opcion_busqueda)
             print('----------------------')
@@ -73,9 +96,12 @@ def buscar(request):
                 resultados = Profesor.objects.filter(nombre__icontains=termino_busqueda)
             elif opcion_busqueda == 'entregable':
                 resultados = Entregable.objects.filter(titulo__icontains=termino_busqueda)
-            else:
+            elif opcion_busqueda == 'todos_los_cursos':
                 resultados = Curso.objects.all()
-            return render(request, 'resultados_busqueda.html', {'resultados': resultados})
+                termino_busqueda = "curso"
+            else:
+                resultados = []
+            return render(request, 'resultados_busqueda.html', {'resultados': resultados, 'termino_busqueda': termino_busqueda})
     else:
         form = BusquedaForm()
     return render(request, 'buscar.html', {'form': form})

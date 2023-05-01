@@ -33,6 +33,8 @@ class Profesor(models.Model):
         return f"Nombre: {self.nombre}  ---  Apellido: {self.apellido}  ---  Doc: {self.Documento}  ---  Email: {self.email}  ---  Curso: {self.curso} "
 
 
+
+
 import datetime
 
 class Entregable(models.Model):
@@ -46,4 +48,3 @@ class Entregable(models.Model):
     def __str__(self):
         fecha_str = self.fecha_entrega.strftime('%d/%m/%Y')
         return f"Estudiante: {self.estudiante}    Curso: {self.curso}    Titulo: {self.titulo}    Fecha de Entrega: {fecha_str}    Adjunto: {self.archivo}    Desc: {self.descripcion}"
-

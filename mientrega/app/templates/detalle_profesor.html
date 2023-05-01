@@ -20,7 +20,7 @@
   <p>ID: {{ profesor.id }}</p>
   <h2>Cursos:</h2>
   <ul>
-    {% for curso in profesor.cursos.all %}
+    {% for curso in profesor.curso %}
       <li><a href="{% url 'detalle_curso' curso.id %}">{{ curso.nombre }}</a></li>
     {% empty %}
       <li>No hay cursos para mostrar.</li>

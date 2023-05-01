@@ -15,6 +15,7 @@
 </html>
 {% extends 'base.html' %}
 {% load static %}
+{% load tz %}
 
 {% block title %}Agregar Entregable{% endblock %}
 
@@ -39,8 +40,8 @@
               </div>
 
               <div class="input-group mb-3">
-                <span class="input-group-text" id="inputGroup-sizing-default">Fecha (DD/MM/YY) </span>
-                <input type="text" class="form-control datepicker" name="fecha_entrega" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                <span class="input-group-text" id="inputGroup-sizing-default">Fecha</span>
+                <input type="text" class="form-control datepicker" name="fecha_entrega" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" value="{{ fecha_actual }}">
               </div>
 
               <div class="input-group mb-3">

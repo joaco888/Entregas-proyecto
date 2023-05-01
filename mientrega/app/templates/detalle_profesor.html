@@ -15,13 +15,12 @@
 {% extends 'base.html' %}
 {% load static %}
 
-
 {% block content %}
   <h1>{{ profesor.nombre }}</h1>
   <p>ID: {{ profesor.id }}</p>
   <h2>Cursos:</h2>
   <ul>
-    {% for curso in cursos %}
+    {% for curso in profesor.cursos.all %}
       <li><a href="{% url 'detalle_curso' curso.id %}">{{ curso.nombre }}</a></li>
     {% empty %}
       <li>No hay cursos para mostrar.</li>

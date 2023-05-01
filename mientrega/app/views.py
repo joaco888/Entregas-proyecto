@@ -5,6 +5,8 @@ from .models import Curso, Estudiante, Profesor, Entregable
 from .forms import CursoForm, EstudianteForm, ProfesorForm, EntregableForm,BusquedaForm
 import os
 from django.conf import settings
+from datetime import date
+from django.utils import timezone
 
 def index(request):
     cursos = Curso.objects.all()
@@ -46,19 +48,15 @@ def agregar_profesor(request):
     if request.method == 'POST':
         form = ProfesorForm(request.POST)
         if form.is_valid():
-            profesor = form.save(commit=False)
-            profesor.save()
-            form.save_m2m()
+            profesor = form.save()
             return redirect('index')
     else:
         form = ProfesorForm()
     cursos = Curso.objects.all()
     return render(request, 'agregar_profesor.html', {'form': form, 'cursos': cursos})
 
-
-
-
 def agregar_entregable(request):
+    fecha_actual = date.today()
     cursos = Curso.objects.all()
     estudiantes = Estudiante.objects.all()
     if request.method == 'POST':
@@ -66,16 +64,16 @@ def agregar_entregable(request):
         if form.is_valid():
             entregable = form.save(commit=False)
             archivo_adjunto = form.cleaned_data.get('archivo')
-            # guardamos el archivo en MEDIA_URL y solo guardamos el nombre del archivo en el campo de archivo
-            entregable.archivo.name = os.path.join(settings.MEDIA_URL, archivo_adjunto.name)
+            # guardamos el archivo en MEDIA_ROOT y solo guardamos el nombre del archivo en el campo de archivo
+            entregable.archivo.name = archivo_adjunto.name
+            entregable.fecha_entrega = timezone.now()
             entregable.save()
             form.save_m2m()
             messages.success(request, 'El Entregable ha sido agregado correctamente.')
             return redirect('index')
     else:
         form = EntregableForm()
-    return render(request, 'agregar_entregable.html', {'form': form, 'cursos': cursos, 'estudiantes': estudiantes})
-
+    return render(request, 'agregar_entregable.html', {'form': form, 'cursos': cursos, 'estudiantes': estudiantes, 'fecha_actual': fecha_actual})
 
 
 

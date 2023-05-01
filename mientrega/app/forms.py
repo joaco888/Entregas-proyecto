@@ -14,14 +14,25 @@ class EstudianteForm(forms.ModelForm):
         fields = ['nombre', 'apellido', 'edad','Documento','Telefono', 'curso']
 
 class ProfesorForm(forms.ModelForm):
+    cursos = forms.ModelMultipleChoiceField(
+        queryset=Curso.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=False,
+    )
     class Meta:
         model = Profesor
-        fields = ['nombre', 'apellido','Documento' ,'email', 'curso']
+        fields = ['nombre', 'apellido', 'Documento', 'email', 'curso']
+
 
 class EntregableForm(forms.ModelForm):
     class Meta:
         model = Entregable
         fields = ['titulo', 'descripcion', 'fecha_entrega', 'curso', 'estudiante', 'archivo']
+        widgets = {
+            'fecha_entrega': forms.DateInput(attrs={'type': 'date'}),
+        }
+        input_formats = ['%d/%m/%Y']
+
 
 
 class BusquedaForm(forms.Form):

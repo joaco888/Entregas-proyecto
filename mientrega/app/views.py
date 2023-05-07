@@ -3,11 +3,15 @@ from django.shortcuts import render, redirect,get_object_or_404
 from django.contrib import messages
 from .models import Curso, Estudiante, Profesor, Entregable
 from .forms import CursoForm, EstudianteForm, ProfesorForm, EntregableForm,BusquedaForm
-import os
-from django.conf import settings
 from datetime import date
 from django.utils import timezone
+from django.contrib.auth import login,logout,authenticate
+from django.contrib.auth.forms import AuthenticationForm,UserCreationForm
+from .forms import UserRegisterForm
+from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 
+@login_required
 def index(request):
     cursos = Curso.objects.all()
     entregables = Entregable.objects.all()
@@ -15,18 +19,29 @@ def index(request):
     profesores = Profesor.objects.all()
     return render(request, 'index.html', {'cursos': cursos, 'entregables': entregables, 'estudiantes': estudiantes, 'profesores': profesores})
 
+from django.db.models import Q
+
 def agregar_curso(request):
     if request.method == 'POST':
         form = CursoForm(request.POST)
         if form.is_valid():
-            Curso = form.save(commit=False)
-            Curso.save()
-            form.save_m2m()
-            messages.success(request, 'El Curso ha sido agregado correctamente.')
-            return redirect('index')
+            nombre_curso = form.cleaned_data['nombre']
+            curso_existente = Curso.objects.filter(Q(nombre=nombre_curso))
+
+            if curso_existente:
+                messages.error(request, 'El Curso ya existe.')
+                return render(request, 'index.html')
+            else:
+                curso = form.save(commit=False)
+                curso.save()
+                form.save_m2m()
+                messages.success(request, 'El Curso ha sido agregado correctamente.')
+                return redirect('index')
     else:
         form = CursoForm()
     return render(request, 'agregar_curso.html', {'form': form})
+
+
 
 
 def agregar_estudiante(request):
@@ -48,7 +63,10 @@ def agregar_profesor(request):
     if request.method == 'POST':
         form = ProfesorForm(request.POST)
         if form.is_valid():
-            profesor = form.save()
+            profesor = form.save(commit=False)
+            profesor.save()
+            form.save_m2m()
+            messages.success(request, 'El Profesor ha sido agregado correctamente.')
             return redirect('index')
     else:
         form = ProfesorForm()
@@ -122,3 +140,41 @@ def detalle_profesor(request, profesor_id):
 def detalle_entregable(request, entregable_id):
     entregable = get_object_or_404(Entregable, id=entregable_id)
     return render(request, 'detalle_entregable.html', {'entregable': entregable})
+
+def registro(request):
+    if request.method == 'POST':
+        form = UserRegisterForm(request.POST)
+        if form.is_valid():
+            username=form.cleaned_data['username']
+            form.save()
+            return render(request,"Home.html" , {"mansaje":" Usiario Creado :"})
+    else:
+        form = UserRegisterForm()
+    return render(request, 'registro.html', {'form': form})
+
+
+
+def login_request(request):
+    if request.method == "POST":
+        form = AuthenticationForm(request, data=request.POST)
+
+        if form.is_valid():
+            usuario = form.cleaned_data.get('username')
+            contra = form.cleaned_data.get('password')
+            user = authenticate(username=usuario, password=contra)
+
+            if user is not None:
+                login(request, user)
+                return render(request, "index.html", {"Mensaje": f" Bienvenido {usuario}"})
+            else:
+                return render(request, "login.html", {"Mensaje": "Error, datos ingresados incorrectos"})
+        else:
+            return render(request, "login.html", {"Mensaje": "Datos ingresados incorrectos"})
+    else:
+        form = AuthenticationForm()
+        return render(request, "login.html", {'form': form})
+
+
+
+def Home(request):
+    return render(request,"Home.html")

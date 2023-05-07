@@ -1,6 +1,7 @@
 # Create your models here.
 from django.db import models
 from datetime import datetime
+import datetime
 
 class Curso(models.Model):
     nombre = models.CharField(max_length=100)
@@ -32,10 +33,6 @@ class Profesor(models.Model):
     def __str__(self):
         return f"Nombre: {self.nombre}  ---  Apellido: {self.apellido}  ---  Doc: {self.Documento}  ---  Email: {self.email}  ---  Curso: {self.curso} "
 
-
-
-
-import datetime
 
 class Entregable(models.Model):
     titulo = models.CharField(max_length=100)

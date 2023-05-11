@@ -103,10 +103,10 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'OPTIONS': {
+            'min_length': 6,
+        }
     },
     {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
@@ -114,7 +114,15 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
+    {
+        'NAME': 'app.validators.UppercaseValidator',  
+        'OPTIONS': {
+            'min_uppercase': 2,
+        },
+    },
 ]
+
+
 
 
 # Internationalization
@@ -134,7 +142,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = (os.path.join(BASE_DIR,'app/staitc'),)
+STATICFILES_DIRS = (os.path.join(BASE_DIR,'app/static'),)
 
 
 
@@ -143,7 +151,12 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR,'app/staitc'),)
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGIN_URL= 'Home'
+LOGIN_URL= 'login'
+LOGIN_REDIRECT_URL= 'index'
+LOGOUT_REDIRECT_URL='Home'
+
+# Configuraciones de sesión
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

@@ -15,18 +15,94 @@
 {% extends 'base.html' %}
 {% load static %}
 
-
 {% block content %}
-  <h1>Resultados de búsqueda</h1>
-  <p>Se encontraron {{ resultados.count }} resultados:</p>
-
-  <ul>
-    {% for resultado in resultados %}
-      <li><a href="{{ resultado.get_absolute_url }}">{{ resultado }}</a></li>
-    {% empty %}
-      <li>No se encontraron resultados.</li>
-    {% endfor %}
-  </ul>
-
+  <h1>Resultados de búsqueda para "{{ termino_busqueda }}" en "{{ opcion_busqueda }}"</h1>
+  <div class="container my-5">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          {% if opcion_busqueda == 'curso' %}
+            <th>Nombre</th>
+            <th>Tipo</th>
+            <th>Jornada</th>
+            <th>Costo</th>
+            <th>Descripción</th>
+          {% elif opcion_busqueda == 'estudiante' %}
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Edad</th>
+            <th>Documento</th>
+            <th>Teléfono</th>
+            <th>Email</th>
+            <th>Curso</th>
+          {% elif opcion_busqueda == 'profesor' %}
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Documento</th>
+            <th>Email</th>
+            <th>Curso</th>
+          {% elif opcion_busqueda == 'entregable' %}
+            <th>Título</th>
+            <th>Descripción</th>
+            <th>Fecha de Entrega</th>
+            <th>Curso</th>
+            <th>Estudiante</th>
+            <th>Archivo</th>
+          {% elif opcion_busqueda == 'todos' %}
+            <th>Nombre</th>
+            <th>Tipo</th>
+            <th>Jornada</th>
+            <th>Costo</th>
+            <th>Descripción</th>
+          {% endif %}
+          <th>Ver detalles</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for resultado in resultados %}
+        <tr>
+          {% if opcion_busqueda == 'curso' %}
+            <td>{{ resultado.nombre }}</td>
+            <td>{{ resultado.Tipo }}</td>
+            <td>{{ resultado.Jornada }}</td>
+            <td>{{ resultado.Costo }}</td>
+            <td>{{ resultado.descripcion }}</td>
+          {% elif opcion_busqueda == 'estudiante' %}
+            <td>{{ resultado.nombre }}</td>
+            <td>{{ resultado.apellido }}</td>
+            <td>{{ resultado.edad }}</td>
+            <td>{{ resultado.Documento }}</td>
+            <td>{{ resultado.Telefono }}</td>
+            <td>{{ resultado.email }}</td>
+            <td>{{ resultado.Curso }}</td>
+          {% elif opcion_busqueda == 'profesor' %}
+            <td>{{ resultado.nombre }}</td>
+            <td>{{ resultado.apellido }}</td>
+            <td>{{ resultado.Documento }}</td>
+            <td>{{ resultado.email }}</td>
+            <td>{{ resultado.curso }}</td>
+          {% elif opcion_busqueda == 'entregable' %}
+            <td>{{ resultado.titulo }}</td>
+            <td>{{ resultado.descripcion }}</td>
+            <td>{{ resultado.fecha_entrega }}</td>
+            <td>{{ resultado.curso }}</td>
+            <td>{{ resultado.estudiante.nombre }}</td>
+            <td><a href="{{ resultado.archivo.url }}" download>Descargar Archivo</a></td>
+          {% elif opcion_busqueda == 'todos_los_cursos' %}
+            <td>{{ resultado.nombre }}</td>
+            <td>{{ resultado.Tipo }}</td>
+            <td>{{ resultado.Jornada }}</td>
+            <td>{{ resultado.Costo }}</td>
+            <td>{{ resultado.descripcion }}</td>
+          {% endif %}
+            <td><a href="{{ resultado.get_absolute_url }}">Ver detalles</a></td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="7" class="text-center">No se encontraron resultados.</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
 {% endblock %}
-

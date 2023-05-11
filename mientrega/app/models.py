@@ -3,14 +3,28 @@ from django.db import models
 from datetime import datetime
 import datetime
 
+from django.db import models
+
 class Curso(models.Model):
+    TIPO_CHOICES = (
+        ('Carrera', 'Carrera'),
+        ('Curso', 'Curso'),
+    )
+
+    JORNADA_CHOICES = (
+        ('Matutino', 'Matutino'),
+        ('Vespertino', 'Vespertino'),
+    )
+
     nombre = models.CharField(max_length=100)
-    Tipo = models.CharField(max_length=100)
-    Jornada = models.CharField(max_length=100)
+    Tipo = models.CharField(max_length=100, choices=TIPO_CHOICES)
+    Jornada = models.CharField(max_length=100, choices=JORNADA_CHOICES)
     Costo = models.DecimalField(decimal_places=2, max_digits=6)
     descripcion = models.TextField()
+
     def __str__(self):
-        return f"Curso:{self.nombre}  ---  Tipo:{self.Tipo}  ---  Jornada:{self.Jornada} "
+        return f"{self.nombre} - {self.Tipo} - {self.Jornada}"
+
 
 
 class Estudiante(models.Model):
@@ -19,16 +33,18 @@ class Estudiante(models.Model):
     edad = models.IntegerField()
     Documento = models.IntegerField()
     Telefono = models.IntegerField()
-    curso = models.ForeignKey(Curso, on_delete=models.CASCADE)
+    email = models.EmailField()
+    Curso = models.ForeignKey(Curso, on_delete=models.CASCADE)
     def __str__(self):
-        return f"Nombre: {self.nombre}  ---  Apellido: {self.apellido}  ---  Edad: {self.edad}  ---  Doc: {self.Documento}  ---  Telefono: {self.Telefono}  ---  Curso: {self.curso}"
+        return f"Nombre: {self.nombre}      Apellido: {self.apellido}       Edad: {self.edad}       Doc: {self.Documento}       Telefono: {self.Telefono}       Email: {self.email}       Curso: {self.Curso}"
+
 
 class Profesor(models.Model): 
     nombre = models.CharField(max_length=100)
     apellido = models.CharField(max_length=100)
     Documento = models.IntegerField(default=0.00)
     email = models.EmailField()
-    curso = models.ManyToManyField(Curso, blank=True)
+    curso = models.ForeignKey(Curso, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"Nombre: {self.nombre}  ---  Apellido: {self.apellido}  ---  Doc: {self.Documento}  ---  Email: {self.email}  ---  Curso: {self.curso} "

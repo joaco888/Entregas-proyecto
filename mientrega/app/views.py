@@ -1,17 +1,16 @@
 # Create your views here.
-from django.shortcuts import render, redirect,get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .models import Curso, Estudiante, Profesor, Entregable
-from .forms import CursoForm, EstudianteForm, ProfesorForm, EntregableForm,BusquedaForm
+from .forms import CursoForm, EstudianteForm, ProfesorForm, EntregableForm, BusquedaForm
 from datetime import date
 from django.utils import timezone
-from django.contrib.auth import login,logout,authenticate
+from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import AuthenticationForm
-from .forms import UserRegisterForm
+from .forms import UserRegisterForm, UserEditForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.urls import reverse
-
 
 
 @login_required(login_url='Home')
@@ -21,7 +20,6 @@ def index(request):
     estudiantes = Estudiante.objects.all()
     profesores = Profesor.objects.all()
     return render(request, 'index.html', {'cursos': cursos, 'entregables': entregables, 'estudiantes': estudiantes, 'profesores': profesores})
-
 
 
 @login_required(login_url='Home')
@@ -43,7 +41,7 @@ def agregar_curso(request):
                 return redirect('index')
     else:
         form = CursoForm()
-        
+
     tipos = Curso.TIPO_CHOICES
     jornadas = Curso.JORNADA_CHOICES
     return render(request, 'agregar_curso.html', {'form': form, 'tipos': tipos, 'jornadas': jornadas})
@@ -60,7 +58,7 @@ def agregar_estudiante(request):
         Telefono = request.POST['Telefono']
         email = request.POST['email']
         curso_id = request.POST['curso']
-        
+
         # Verificar si el estudiante ya existe en la base de datos
         if Estudiante.objects.filter(Documento=Documento, Curso_id=curso_id).exists():
             error_message = "Este estudiante ya está registrado en este curso."
@@ -69,15 +67,18 @@ def agregar_estudiante(request):
         else:
             # Crear un nuevo objeto Estudiante
             curso = Curso.objects.get(id=curso_id)
-            estudiante = Estudiante(nombre=nombre, apellido=apellido, edad=edad, Documento=Documento, Telefono=Telefono, email=email, Curso=curso)
+            estudiante = Estudiante(nombre=nombre, apellido=apellido, edad=edad,
+                                    Documento=Documento, Telefono=Telefono, email=email, Curso=curso)
             estudiante.save()
-            messages.success(request, 'El estudiante ha sido agregado correctamente.')
+            messages.success(
+                request, 'El estudiante ha sido agregado correctamente.')
             return redirect('index')
     else:
         cursos = Curso.objects.all()
         form = EstudianteForm()
         return render(request, 'agregar_estudiante.html', {'cursos': cursos, 'form': form})
-    
+
+
 @login_required(login_url='Home')
 def agregar_profesor(request):
     if request.method == 'POST':
@@ -90,18 +91,21 @@ def agregar_profesor(request):
             curso = form.cleaned_data['curso']
 
             # Verificar si el profesor ya existe en ese curso
-            existe = Profesor.objects.filter(Documento=documento, curso=curso).exists()
+            existe = Profesor.objects.filter(
+                Documento=documento, curso=curso).exists()
             if existe:
                 message = "El profesor ya existe en ese curso."
                 cursos = Curso.objects.all()
                 return render(request, 'agregar_profesor.html', {'cursos': cursos, 'message': message, 'form': form})
 
             # Si el profesor no existe, crearlo
-            profesor = Profesor(nombre=nombre, apellido=apellido, Documento=documento, email=email, curso=curso)
+            profesor = Profesor(nombre=nombre, apellido=apellido,
+                                Documento=documento, email=email, curso=curso)
             profesor.save()
 
             # Agregar mensaje de éxito
-            messages.success(request, 'El profesor ha sido agregado exitosamente.')
+            messages.success(
+                request, 'El profesor ha sido agregado exitosamente.')
 
             return redirect('index')
     else:
@@ -110,10 +114,6 @@ def agregar_profesor(request):
         return render(request, 'agregar_profesor.html', {'cursos': cursos, 'form': form})
 
 
-
-
-
-    
 @login_required(login_url='Home')
 def agregar_entregable(request):
     fecha_actual = date.today()
@@ -129,7 +129,8 @@ def agregar_entregable(request):
             entregable.fecha_entrega = timezone.now()
             entregable.save()
             form.save_m2m()
-            messages.success(request, 'El Entregable ha sido agregado correctamente.')
+            messages.success(
+                request, 'El Entregable ha sido agregado correctamente.')
             return redirect('index')
     else:
         form = EntregableForm()
@@ -144,26 +145,35 @@ def buscar(request):
             opcion_busqueda = form.cleaned_data['opcion']
             termino_busqueda = form.cleaned_data['busqueda']
             if opcion_busqueda == 'curso':
-                resultados = Curso.objects.filter(nombre__icontains=termino_busqueda)
+                resultados = Curso.objects.filter(
+                    nombre__icontains=termino_busqueda)
                 for resultado in resultados:
-                    resultado.url = reverse('detalle_curso', args=[resultado.id])
+                    resultado.url = reverse(
+                        'detalle_curso', args=[resultado.id])
             elif opcion_busqueda == 'estudiante':
-                resultados = Estudiante.objects.filter(nombre__icontains=termino_busqueda)
+                resultados = Estudiante.objects.filter(
+                    nombre__icontains=termino_busqueda)
                 for resultado in resultados:
-                    resultado.url = reverse('detalle_estudiante', args=[resultado.id])
+                    resultado.url = reverse(
+                        'detalle_estudiante', args=[resultado.id])
             elif opcion_busqueda == 'profesor':
-                resultados = Profesor.objects.filter(nombre__icontains=termino_busqueda)
+                resultados = Profesor.objects.filter(
+                    nombre__icontains=termino_busqueda)
                 for resultado in resultados:
-                    resultado.url = reverse('detalle_profesor', args=[resultado.id])
+                    resultado.url = reverse(
+                        'detalle_profesor', args=[resultado.id])
             elif opcion_busqueda == 'entregable':
-                resultados = Entregable.objects.filter(titulo__icontains=termino_busqueda)
+                resultados = Entregable.objects.filter(
+                    titulo__icontains=termino_busqueda)
                 for resultado in resultados:
-                    resultado.url = reverse('detalle_entregable', args=[resultado.id])
+                    resultado.url = reverse(
+                        'detalle_entregable', args=[resultado.id])
             elif opcion_busqueda == 'todos_los_cursos':
                 resultados = Curso.objects.all()
                 termino_busqueda = "curso"
                 for resultado in resultados:
-                    resultado.url = reverse('detalle_curso', args=[resultado.id])
+                    resultado.url = reverse(
+                        'detalle_curso', args=[resultado.id])
             else:
                 resultados = []
             return render(request, 'resultados_busqueda.html', {'resultados': resultados, 'termino_busqueda': termino_busqueda, 'opcion_busqueda': opcion_busqueda})
@@ -172,11 +182,11 @@ def buscar(request):
     return render(request, 'buscar.html', {'form': form})
 
 
-
 @login_required(login_url='Home')
 def detalle_curso(request):
     cursos = Curso.objects.all()
     return render(request, 'detalle_cursos.html', {'cursos': cursos})
+
 
 @login_required(login_url='Home')
 def detalle_estudiante(request, estudiante_id):
@@ -184,11 +194,14 @@ def detalle_estudiante(request, estudiante_id):
     entregables = Entregable.objects.filter(estudiante=estudiante)
     return render(request, 'detalle_estudiante.html', {'estudiante': estudiante, 'entregables': entregables})
 
+
 @login_required(login_url='Home')
 def detalle_profesor(request, profesor_id):
     profesor = get_object_or_404(Profesor, id=profesor_id)
     cursos = profesor.cursos.all()
     return render(request, 'detalle_profesor.html', {'profesor': profesor, 'cursos': cursos})
+
+
 @login_required(login_url='Home')
 def detalle_entregable(request, entregable_id):
     entregable = get_object_or_404(Entregable, id=entregable_id)
@@ -206,7 +219,8 @@ def registro(request):
                 password1 = form.cleaned_data['password1']
                 password2 = form.cleaned_data['password2']
                 if password1 != password2:
-                    form.add_error('password2', 'Las contraseñas no coinciden')
+                    form.add_error(
+                        'password2', 'Las contraseñas no coinciden')
                 else:
                     form.save()
                     username = form.cleaned_data['username']
@@ -214,6 +228,7 @@ def registro(request):
     else:
         form = UserRegisterForm()
     return render(request, 'registro.html', {'form': form})
+
 
 def login_request(request):
     if request.method == "POST":
@@ -226,7 +241,7 @@ def login_request(request):
 
             if user is not None:
                 login(request, user)
-                return redirect('index')  # Redirige a 'Home' después de iniciar sesión
+                return render(request, 'index.html', {"Mensaje": f" Bienvenido{usuario}"})
             else:
                 return render(request, "login.html", {"Mensaje": "Error, datos ingresados incorrectos"})
         else:
@@ -236,13 +251,36 @@ def login_request(request):
         return render(request, "login.html", {'form': form})
 
 
-
-
 def Home(request):
-    return render(request,"Home.html")
+    return render(request, "Home.html")
+
 
 def logout_view(request):
     logout(request)
     request.session.logged_out = True
     return redirect('Home')
 
+
+@login_required
+def editarPerfil(request):
+    usuario = request.user
+    if request.method == 'POST':
+        miFormulario = UserEditForm(request.POST)
+        if miFormulario.is_valid():
+            informacion = miFormulario.cleaned_data
+            usuario.email = informacion['email']
+            password1 = informacion['password1']
+            password2 = informacion['password2']
+            if password1 == password2:
+                # Actualizar la contraseña utilizando set_password
+                usuario.set_password(password1)
+            else:
+                miFormulario.add_error(
+                    'password2', 'Las contraseñas no coinciden')
+            usuario.first_name = informacion['first_name']
+            usuario.last_name = informacion['last_name']
+            usuario.save()
+            return render(request, 'index.html')
+    else:
+        miFormulario = UserEditForm(initial={'email': usuario.email})
+    return render(request, 'editarPerfil.html', {'miFormulario': miFormulario, 'usuario': usuario})

@@ -12,6 +12,7 @@ Python 3.x
 Django 3.x
 django-crispy-forms
 django-cleanup
+
 Instalación
 Sigue los siguientes pasos para instalar y ejecutar el proyecto:
 

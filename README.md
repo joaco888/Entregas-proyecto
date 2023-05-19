@@ -1,9 +1,6 @@
 # Entregas-proyecto
 
-Link expositivo del proyecto:  https://www.loom.com/share/319c45eb1a3f458bb732150f7912efc2
-
-
-Sistema de Gestión de Cursos :
+Sistema de Gestión de Cursos
 
 Este es un proyecto básico de Django que implementa un sistema de gestión de cursos. El sistema permite la administración de cursos, estudiantes, profesores y entregables.
 
@@ -137,3 +134,5 @@ Puedes ejecutar estas pruebas utilizando el siguiente comando: python manage.py 
 
 
 Esto ejecutará todas las pruebas y mostrará los resultados en la terminal.
+  
+  Link expositivo del proyecto:  https://www.loom.com/share/319c45eb1a3f458bb732150f7912efc2

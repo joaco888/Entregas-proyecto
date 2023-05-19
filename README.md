@@ -3,20 +3,20 @@
 Link expositivo del proyecto:  https://www.loom.com/share/319c45eb1a3f458bb732150f7912efc2
 
 
-Sistema de Gestión de Cursos
+Sistema de Gestión de Cursos :
 
 Este es un proyecto básico de Django que implementa un sistema de gestión de cursos. El sistema permite la administración de cursos, estudiantes, profesores y entregables.
 
-Requisitos
+Requisitos :
 
 Para correr esta aplicación, necesitarás tener instalado lo siguiente en tu sistema:
 
-Python 3.x
-Django 3.x
-django-crispy-forms
-django-cleanup
+- Python 3.x
+- Django 3.x
+- django-crispy-forms
+- django-cleanup
 
-Instalación
+Instalación :
 
 Sigue los siguientes pasos para instalar y ejecutar el proyecto:
 
@@ -25,7 +25,7 @@ Clona o descarga el repositorio en tu máquina local: git clone https://github.c
 Crea un entorno virtual de Python ejecutando el siguiente comando: python3 -m venv myvenv
 
 
-Activa el entorno virtual
+Activa el entorno virtual:
 
 En macOS o Linux: source myvenv/bin/activate
 
@@ -47,7 +47,7 @@ Inicia el servidor de desarrollo: python manage.py runserver
 Abre tu navegador web e ingresa la siguiente URL: http://127.0.0.1:8000/
 
 
-Funcionalidad
+Funcionalidad :
 
 
 Este sistema de gestión de cursos tiene las siguientes vistas:
@@ -78,11 +78,11 @@ En general, estas vistas proporcionan una funcionalidad básica para administrar
 Sin embargo, es posible que se necesite agregar más vistas y funcionalidades dependiendo de los requisitos específicos de la aplicación.
 
 
-Uso
+Uso :
 
 El sistema de gestión de cursos tiene las siguientes funcionalidades:
 
-Administración de cursos
+Administración de cursos :
 
 Crear un nuevo curso.
 Ver una lista de todos los cursos existentes.
@@ -91,7 +91,7 @@ Editar un curso existente.
 Eliminar un curso existente.
 
 
-Administración de estudiantes
+Administración de estudiantes :
 
 Registrar un nuevo estudiante en un curso específico.
 Ver una lista de todos los estudiantes registrados en un curso.
@@ -100,7 +100,7 @@ Editar la información de un estudiante existente en un curso.
 Eliminar un estudiante existente de un curso.
 
 
-Administración de profesores
+Administración de profesores :
 
 Agregar un nuevo profesor.
 Ver una lista de todos los profesores existentes.
@@ -109,7 +109,7 @@ Editar la información de un profesor existente.
 Eliminar un profesor existente.
 
 
-Administración de entregables
+Administración de entregables :
 
 Agregar un nuevo entregable a un curso específico.
 Ver una lista de todos los entregables asociados a un curso.
@@ -120,7 +120,7 @@ Eliminar un entregable existente.
 Estas funcionalidades permiten a los usuarios autenticados realizar todas las acciones necesarias para gestionar los cursos, estudiantes, profesores y entregables en el sistema.
 
 
-Pruebas
+Pruebas :
 
 El proyecto también incluye pruebas unitarias para asegurar el correcto funcionamiento de algunas funcionalidades clave. 
 

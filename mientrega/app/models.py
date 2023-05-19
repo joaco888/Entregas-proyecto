@@ -2,8 +2,9 @@
 from django.db import models
 from datetime import datetime
 import datetime
-
 from django.db import models
+from django.contrib.auth.models import User
+
 
 class Curso(models.Model):
     TIPO_CHOICES = (
@@ -26,7 +27,6 @@ class Curso(models.Model):
         return f"{self.nombre} - {self.Tipo} - {self.Jornada}"
 
 
-
 class Estudiante(models.Model):
     nombre = models.CharField(max_length=100)
     apellido = models.CharField(max_length=100)
@@ -34,12 +34,13 @@ class Estudiante(models.Model):
     Documento = models.IntegerField()
     Telefono = models.IntegerField()
     email = models.EmailField()
-    Curso = models.ForeignKey(Curso, on_delete=models.CASCADE)
+    curso = models.ForeignKey(Curso, on_delete=models.CASCADE)
+
     def __str__(self):
-        return f"Nombre: {self.nombre}      Apellido: {self.apellido}       Edad: {self.edad}       Doc: {self.Documento}       Telefono: {self.Telefono}       Email: {self.email}       Curso: {self.Curso}"
+        return f"Nombre: {self.nombre}      Apellido: {self.apellido}       Edad: {self.edad}       Doc: {self.Documento}       Telefono: {self.Telefono}       Email: {self.email}       Curso: {self.curso}"
 
 
-class Profesor(models.Model): 
+class Profesor(models.Model):
     nombre = models.CharField(max_length=100)
     apellido = models.CharField(max_length=100)
     Documento = models.IntegerField(default=0.00)
@@ -57,7 +58,15 @@ class Entregable(models.Model):
     curso = models.ForeignKey(Curso, on_delete=models.CASCADE)
     estudiante = models.ForeignKey(Estudiante, on_delete=models.CASCADE)
     archivo = models.FileField(upload_to='media/')
-    
+
     def __str__(self):
         fecha_str = self.fecha_entrega.strftime('%d/%m/%Y')
         return f"Estudiante: {self.estudiante}    Curso: {self.curso}    Titulo: {self.titulo}    Fecha de Entrega: {fecha_str}    Adjunto: {self.archivo}    Desc: {self.descripcion}"
+
+
+class Avatar(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    imagen = models.ImageField(upload_to='avatars', null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.user} - {self.imagen}"

@@ -28,6 +28,13 @@
                 <button type="submit" class="btn btn-success">Buscar</button>
               </div>
             </form>
+            {% if mensajes %}
+              <div class="alert alert-warning mt-3">
+                {% for mensaje in mensajes %}
+                  {{ mensaje }}
+                {% endfor %}
+              </div>
+            {% endif %}
           </div>
         </div>
       </div>
@@ -35,4 +42,3 @@
   </div>
   {% include 'parts/foots/footbuscar.html' %}
 {% endblock %}
-

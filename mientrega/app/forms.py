@@ -3,7 +3,6 @@ from .models import Curso, Estudiante, Profesor, Entregable
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
-
 class CursoForm(forms.ModelForm):
     class Meta:
         model = Curso
@@ -13,13 +12,11 @@ class CursoForm(forms.ModelForm):
 class EstudianteForm(forms.ModelForm):
     class Meta:
         model = Estudiante
-        fields = ['nombre', 'apellido', 'edad',
-                  'Documento', 'Telefono', 'email', 'Curso']
+        fields = ['nombre', 'apellido', 'edad','Documento', 'Telefono', 'email', 'curso']
 
 
 class ProfesorForm(forms.ModelForm):
-    cursos = forms.ModelMultipleChoiceField(
-        queryset=Curso.objects.all(),
+    cursos = forms.ModelMultipleChoiceField(queryset=Curso.objects.all(),
         widget=forms.CheckboxSelectMultiple,
         required=False,
     )
@@ -90,3 +87,7 @@ class UserEditForm(UserCreationForm):
     class Meta:
         model = User
         fields = ['email', 'password1', 'password2', 'last_name', 'first_name']
+        
+
+class AvatarFormulario(forms.Form):
+    imagen=forms.ImageField(required=True)

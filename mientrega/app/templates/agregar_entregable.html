@@ -65,15 +65,24 @@
                 <input type="file" class="form-control" name="archivo" id="archivo">
                 <small class="form-text text-muted">Seleccione un archivo en formato PDF, máximo 30MB.</small>
               </div>
-
+              
+              {% if messages %}
+              <div class="alert alert-danger">
+                {% for message in messages %}
+                <p>{{ message }}</p>
+                {% endfor %}
+              </div>
+              {% endif %}          
               <div class="text-center">
                 <button type="submit" class="btn btn-success">Guardar</button>
-              </div>
-            </form> 
+            </div>
+           </form>
           </div>
+         </div>
         </div>
+       </div>
       </div>
-    </div>
-  </div>
-  {% include 'parts/foots/footagregar_Entreg.html' %}
-{% endblock %}
+     </div>  
+     {% include 'parts/foots/footagregar_Entreg.html' %}
+    {% endblock %}
+              

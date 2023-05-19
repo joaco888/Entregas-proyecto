@@ -40,6 +40,14 @@
               </select>
             </div>
 
+            {% if messages %}
+            <div class="alert alert-danger" role="alert">
+              {% for message in messages %}
+              {{ message }}
+              {% endfor %}
+            </div>
+            {% endif %}
+
             <div class="text-center">
               <button type="submit" class="btn btn-success">Guardar</button>
             </div>
@@ -49,4 +57,5 @@
     </div>
   </div>
 </div>
+{% include 'parts/foots/footagregar_Prof.html' %}
 {% endblock %}

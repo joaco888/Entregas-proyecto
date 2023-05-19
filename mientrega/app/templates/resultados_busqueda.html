@@ -48,7 +48,7 @@
             <th>Curso</th>
             <th>Estudiante</th>
             <th>Archivo</th>
-          {% elif opcion_busqueda == 'todos' %}
+          {% elif opcion_busqueda == 'todos_los_cursos' %}
             <th>Nombre</th>
             <th>Tipo</th>
             <th>Jornada</th>
@@ -67,6 +67,7 @@
             <td>{{ resultado.Jornada }}</td>
             <td>{{ resultado.Costo }}</td>
             <td>{{ resultado.descripcion }}</td>
+            <td><a href="{% url 'detalle_curso' resultado.id %}">Ver detalles</a></td>
           {% elif opcion_busqueda == 'estudiante' %}
             <td>{{ resultado.nombre }}</td>
             <td>{{ resultado.apellido }}</td>
@@ -74,28 +75,32 @@
             <td>{{ resultado.Documento }}</td>
             <td>{{ resultado.Telefono }}</td>
             <td>{{ resultado.email }}</td>
-            <td>{{ resultado.Curso }}</td>
+            <td>{{ resultado.curso }}</td>
+            <td><a href="{% url 'detalle_estudiante' resultado.id %}">Ver detalles</a></td>
           {% elif opcion_busqueda == 'profesor' %}
             <td>{{ resultado.nombre }}</td>
             <td>{{ resultado.apellido }}</td>
             <td>{{ resultado.Documento }}</td>
             <td>{{ resultado.email }}</td>
             <td>{{ resultado.curso }}</td>
+            <td><a href="{% url 'detalle_profesor' resultado.id %}">Ver detalles</a></td>
           {% elif opcion_busqueda == 'entregable' %}
             <td>{{ resultado.titulo }}</td>
             <td>{{ resultado.descripcion }}</td>
             <td>{{ resultado.fecha_entrega }}</td>
             <td>{{ resultado.curso }}</td>
             <td>{{ resultado.estudiante.nombre }}</td>
-            <td><a href="{{ resultado.archivo.url }}" download>Descargar Archivo</a></td>
+            <td><a href="{{ resultado.archivo }}" download>Descargar Archivo</a></td>
+            <td><a href="{% url 'detalle_entregable' resultado.id %}">Ver detalles</a></td>
           {% elif opcion_busqueda == 'todos_los_cursos' %}
             <td>{{ resultado.nombre }}</td>
             <td>{{ resultado.Tipo }}</td>
             <td>{{ resultado.Jornada }}</td>
             <td>{{ resultado.Costo }}</td>
             <td>{{ resultado.descripcion }}</td>
+            <td><a href="{% url 'detalle_curso' resultado.id %}">Ver detalles</a></td>
+            
           {% endif %}
-            <td><a href="{{ resultado.get_absolute_url }}">Ver detalles</a></td>
         </tr>
       {% empty %}
         <tr>
